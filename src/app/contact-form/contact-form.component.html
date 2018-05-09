@@ -1,0 +1,61 @@
+<form #f="ngForm" (ngSubmit)="submit(f)">
+  <div ngModelGroup="contact" #contact="ngModelGroup">
+    <div >
+      <label for="firstName">
+        First Name
+      </label>
+      <input 
+        required
+        minlength="3"
+        maxlength="10"
+        ngModel name="firstName" 
+        #firstName="ngModel" 
+        (change)="log(firstName)"  
+        type="text"  id="firstName" 
+        class="form-control">
+      <div class="alert alert-danger" *ngIf="firstName.touched && firstName.invalid">
+        <div 
+          *ngIf="firstName.errors.required">
+          First Name is Required
+        </div>
+        <div 
+          *ngIf="firstName.errors.minlength">
+          First Name should be {{firstName.errors.minlength.requiredLength}} Character
+        </div>
+        <div 
+          *ngIf="firstName.errors.maxlength">
+          Max Length should be {{firstName.errors.maxlength.requiredLength}} Character
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="comment">
+        Comment
+      </label>
+      <textarea 
+        required
+        ngModel name="comment"
+        id="comment"  cols="30" rows="10" class="form-control">
+      </textarea>
+    </div>
+    <div class="form-group">
+      <label for="contactMethod"></label>
+      <select multiple ngModel name="contactMethod" id="contactMethod" class="form-control">
+        <option></option>
+        <option *ngFor="let contact of contactMethod" [value]="contact.id">{{contact.method}}</option>
+      </select>
+    </div>
+    <div *ngFor="let contact of contactMethod" class="radio">
+      <label for="radioContactMethod"> 
+        <input ngModel name="contactGroup" type="radio"  [value]="contact.id">
+      {{contact.method}}
+      </label>
+    </div>
+    <label for="Subscribed">Subscribed</label>
+    <input ngModel name="isSubscribed" type="checkbox">
+  </div>
+  <div>
+    <p>{{f.value | json}}</p>
+  </div>
+  <button class="btn btn-primary" [disabled]="!f.valid">submit</button>
+</form>
